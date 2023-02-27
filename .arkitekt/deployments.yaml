@@ -1,0 +1,10 @@
+deployments:
+- definitions: []
+  deployed:
+    docker: jhnnsrs/omero:latest
+    runtime: standard
+  deployer: arkitekt.deployers.port.dockerbuild
+  identifier: omero
+  scopes:
+  - read
+  version: latest

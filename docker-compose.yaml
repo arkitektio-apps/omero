@@ -1,0 +1,12 @@
+version: "3.4"
+
+services:
+  convertor:
+    build: .
+    
+
+
+networks:
+  default:
+    external:
+      name: dev

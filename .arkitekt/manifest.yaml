@@ -1,0 +1,6 @@
+author: john doe
+entrypoint: app
+identifier: omero
+scopes:
+- read
+version: latest

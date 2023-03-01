@@ -5,9 +5,6 @@ import xarray as xr
 from concurrent.futures import ThreadPoolExecutor
 import asyncio
 from arkitekt import register
-from fakts.grants.remote.device_code import DeviceCodeGrant
-from fakts.grants.remote.base import StaticDiscovery
-from fakts import Fakts
 from mikro.api.schema import (
     RepresentationFragment,
     from_xarray,
@@ -29,12 +26,8 @@ from mikro.api.schema import (
     create_instrument,
     create_position,
 )
-
 from aicsimageio import AICSImage
 from aicsimageio.readers.bioformats_reader import BioFile
-from rekuest.actors.functional import (
-    CompletlyThreadedActor,
-)
 from pydantic import Field
 import bioformats
 import javabridge

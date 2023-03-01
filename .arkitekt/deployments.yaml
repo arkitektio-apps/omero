@@ -1,5 +1,6 @@
 deployments:
-- definitions: []
+- builder: arkitekt.builder.port
+  definitions: []
   deployed:
     docker: jhnnsrs/omero:latest
     runtime: standard

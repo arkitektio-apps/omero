@@ -31,6 +31,8 @@ ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
 # Install dependencies
 RUN pip install poetry rich
+RUN pip install numpy
+RUN pip install python-bioformats
 ENV PYTHONUNBUFFERED=1
 
 # Copy dependencies
@@ -38,7 +40,7 @@ COPY pyproject.toml /
 RUN poetry config virtualenvs.create false 
 RUN poetry install
 
-RUN pip install "arkitekt[cli]==0.4.37"
+RUN pip install "arkitekt[cli]==0.4.42"
 
 
 # Install Arbeid

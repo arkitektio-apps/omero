@@ -8,10 +8,11 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.8"
 numpy = "^1.23.5"
-aicsimageio = "^4.9.3"
 bioformats-jar = "^2020.5.27"
 tifffile = "^2022.10.10"
 readlif = ">=0.6.4"
+python-bioformats = "^4.0.7"
+aicsimageio = "^4.9.4"
 
 
 [build-system]

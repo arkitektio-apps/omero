@@ -8,14 +8,8 @@ from arkitekt import register
 from mikro.api.schema import (
     RepresentationFragment,
     from_xarray,
-    RepresentationVariety,
     OmeroFileFragment,
-    ExperimentFragment,
-    SampleFragment,
-    OmeroFileType,
-    create_experiment,
     DatasetFragment,
-    create_sample,
     OmeroRepresentationInput,
     ObjectiveSettingsInput,
     ImagingEnvironmentInput,
@@ -26,16 +20,11 @@ from mikro.api.schema import (
     create_instrument,
     create_position,
 )
-from aicsimageio import AICSImage
-from aicsimageio.readers.bioformats_reader import BioFile
-from pydantic import Field
 import bioformats
 import javabridge
-from ome_types import from_xml
 from ome_types.model import Pixels
 import logging
 import tifffile
-from aicsimageio.metadata.utils import clean_ome_xml_for_known_issues
 from aicsimageio.metadata.utils import bioformats_ome
 
 logger = logging.getLogger(__name__)
@@ -241,6 +230,3 @@ def convert_omero_file(
             )
 
     return images
-
-
-

@@ -29,4 +29,14 @@ deployments:
   scopes:
   - read
   version: beta2
-latest_deployment: '2023-03-02T16:11:34.625138'
+- builder: arkitekt.builder.port
+  definitions: []
+  deployed:
+    docker: jhnnsrs/omero:beta3
+    runtime: standard
+  deployer: arkitekt.deployers.port.dockerbuild
+  identifier: omero
+  scopes:
+  - read
+  version: beta3
+latest_deployment: '2023-03-06T10:42:32.613029'

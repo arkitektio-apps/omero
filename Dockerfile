@@ -40,7 +40,7 @@ COPY pyproject.toml /
 RUN poetry config virtualenvs.create false 
 RUN poetry install
 
-RUN pip install "arkitekt[cli]==0.4.63"
+RUN pip install "arkitekt[cli]==0.4.64"
 
 
 # Install Arbeid

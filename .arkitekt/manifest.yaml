@@ -1,6 +1,7 @@
 author: john doe
 entrypoint: app
 identifier: omero
+requirements: []
 scopes:
 - read
 version: latest

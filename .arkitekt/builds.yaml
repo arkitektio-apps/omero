@@ -1,0 +1,22 @@
+builds:
+- build_id: d1886137-efe4-4cf3-ac63-246d66963017
+  builder: port
+  manifest:
+    author: john doe
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: latest
+latest_build:
+  build_id: d1886137-efe4-4cf3-ac63-246d66963017
+  builder: port
+  manifest:
+    author: john doe
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: latest

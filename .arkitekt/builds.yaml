@@ -9,8 +9,7 @@ builds:
     scopes:
     - read
     version: latest
-latest_build:
-  build_id: d1886137-efe4-4cf3-ac63-246d66963017
+- build_id: cc3dd5de-d6ad-4d4a-a58b-9add84621d83
   builder: port
   manifest:
     author: john doe
@@ -19,4 +18,15 @@ latest_build:
     requirements: []
     scopes:
     - read
-    version: latest
+    version: 0.0.1
+latest_build:
+  build_id: cc3dd5de-d6ad-4d4a-a58b-9add84621d83
+  builder: port
+  manifest:
+    author: john doe
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: 0.0.1

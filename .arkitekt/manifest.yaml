@@ -4,4 +4,4 @@ identifier: omero
 requirements: []
 scopes:
 - read
-version: latest
+version: 0.0.1

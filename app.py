@@ -20,15 +20,15 @@ from mikro.api.schema import (
     create_instrument,
     create_position,
 )
-import bioformats
-import javabridge
 from ome_types.model import Pixels
 import logging
 import tifffile
 from aicsimageio.metadata.utils import bioformats_ome
+from scyjava import config, jimport
+import scyjava
 
 logger = logging.getLogger(__name__)
-
+x = config
 
 def load_as_xarray(path: str, series: str, pixels: Pixels):
     if path.endswith((".stk", ".tif", ".tiff", ".TIF")):
@@ -39,64 +39,7 @@ def load_as_xarray(path: str, series: str, pixels: Pixels):
         return xr.DataArray(image, dims=list("ctzyx"))
 
     else:
-        javabridge.start_vm(run_headless=True, class_path=bioformats.JARS)
-        javabridge.attach()
-
-        initial_array = xr.DataArray(
-            np.zeros(
-                (
-                    pixels.size_c,
-                    pixels.size_t,
-                    pixels.size_z,
-                    pixels.size_x,
-                    pixels.size_y,
-                )
-            ),
-            dims=list("ctzxy"),
-        )
-
-        with bioformats.ImageReader(path, perform_init=True) as reader:
-            for c in range(pixels.size_c):
-                for z in range(pixels.size_z):
-                    for t in range(pixels.size_t):
-                        # bioformats appears to swap axes for tif images and read all three channels at a time for RGB
-                        im1 = reader.read(
-                            c=c,
-                            z=z,
-                            t=t,
-                            series=series,
-                            rescale=True,
-                            channel_names=None,
-                        )
-                        if im1.ndim == 3:
-                            if im1.shape[2] == 3:
-                                # Three channels are red
-                                im2 = im1[:, :, c]
-                            else:
-                                im2 = im1
-                        else:
-                            im2 = im1
-                        if (
-                            pixels.size_x == im2.shape[1]
-                            and pixels.size_y == im2.shape[0]
-                        ) and not pixels.size_x == pixels.size_y:
-                            # x and y are swapped
-                            logging.warning(
-                                "Image might be transposed. Swapping X and Y"
-                            )
-                            im3 = im2.transpose()
-                        else:
-                            im3 = im2
-
-                        initial_array[
-                            c,
-                            t,
-                            z,
-                            :,
-                            :,
-                        ] = im3
-
-        return initial_array
+        raise NotImplementedError("Only tiff supported at the moment. Because of horrendous python bioformats performance and memory leaks.")
 
 
 @register()
@@ -228,5 +171,48 @@ def convert_omero_file(
                     ),
                 )
             )
+
+    return images
+
+
+@register()
+def convert_tiff_file(
+    file: OmeroFileFragment,
+    stage: Optional[StageFragment],
+    dataset: Optional[DatasetFragment],
+) -> List[RepresentationFragment]:
+    """Convert Tiff File
+
+    Converts an tilffe File in a set of Mikrodata
+
+    Args:
+        file (OmeroFileFragment): The File to be converted
+        sample (Optional[SampleFragment], optional): The Sample to which the Image belongs. Defaults to None.
+        experiment (Optional[ExperimentFragment], optional): The Experiment to which the Image belongs. Defaults to None.
+        auto_create_sample (bool, optional): Should we automatically create a sample if none is provided?. Defaults to True.
+        position_from_planes (bool, optional): Should we use the first planes position to put the image into context
+
+    Returns:
+        List[RepresentationFragment]: The created series in this file
+    """
+
+    images = []
+
+    assert file.file, "No File Provided"
+    with file.file as f:
+        image = tifffile.imread(f)
+
+        image = image.reshape((1,) * (5 - image.ndim) + image.shape)
+        array = xr.DataArray(image, dims=list("ctzyx"))
+
+        images.append(
+            from_xarray(
+                array,
+                name=file.name,
+                datasets=[dataset] if dataset else file.datasets,
+                file_origins=[file],
+                tags=["converted"],
+            )
+        )
 
     return images

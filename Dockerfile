@@ -28,19 +28,22 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
-
-# Install dependencies
-RUN pip install poetry rich
+COPY requirements.txt /
 RUN pip install numpy
-RUN pip install python-bioformats
-ENV PYTHONUNBUFFERED=1
+RUN pip install "bioformats_jar"
+RUN pip install "aicsimageio[nd2, dv, base-imageio]==4.9.4"
+RUN pip install "readlif>=0.6.4"
+RUN pip install "tifffile==2022.10.10"
+RUN pip install "scyjava"
+RUN pip install "requests"
+RUN pip install "arkitekt[cli]==0.4.83"
 
-# Copy dependencies
-COPY pyproject.toml /
-RUN poetry config virtualenvs.create false 
-RUN poetry install
 
-RUN pip install "arkitekt[cli]==0.4.77"
+COPY test.tiff /tmp
+COPY z.py /tmp
+WORKDIR /tmp
+RUN python z.py
+
 
 
 # Install Arbeid
@@ -48,5 +51,4 @@ RUN mkdir /workspace
 ADD . /workspace
 WORKDIR /workspace
 
-RUN python x.py
 

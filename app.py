@@ -19,6 +19,10 @@ from mikro.api.schema import (
     StageFragment,
     create_instrument,
     create_position,
+    create_channel,
+    create_dimension_map,
+    Dimension,
+    
 )
 from ome_types.model import Pixels
 import logging
@@ -48,6 +52,7 @@ def convert_omero_file(
     stage: Optional[StageFragment],
     dataset: Optional[DatasetFragment],
     position_from_planes: bool = True,
+    channels_from_channels: bool = True,
     position_tolerance: Optional[float] = None,
 ) -> List[RepresentationFragment]:
     """Convert Omero
@@ -109,8 +114,7 @@ def convert_omero_file(
                     tolerance=position_tolerance,
                 )
 
-            images.append(
-                from_xarray(
+            rep = from_xarray(
                     array,
                     name=image.name,
                     datasets=[dataset] if dataset else file.datasets,
@@ -130,7 +134,7 @@ def convert_omero_file(
                             )
                             for p in pixels.planes
                         ],
-                        position=position,
+                        positions=[position] if position else None,
                         acquisitionDate=image.acquisition_date,
                         physicalSize=PhysicalSizeInput(
                             x=pixels.physical_size_x,
@@ -170,6 +174,32 @@ def convert_omero_file(
                         else None,
                     ),
                 )
+            
+            if channels_from_channels:
+                assert len(pixels.channels) == array.sizes["c"], "Number of channels does not match"
+                for index, c in enumerate(pixels.channels):
+                    c = create_channel(
+                                    name=c.name,
+                                    emission_wavelength=c.emission_wavelength,
+                                    excitation_wavelength=c.excitation_wavelength,
+                                    acquisition_mode=c.acquisition_mode.value
+                                    if c.acquisition_mode
+                                    else None,
+                                    color=c.color.as_rgb() if c.color else None,
+                                )
+                    
+                    map = create_dimension_map(
+                        omero=rep.omero.id,
+                        dim=Dimension.C,
+                        index=index,
+                        channel=c
+                    )
+                            
+
+
+
+            images.append(
+                rep
             )
 
     return images

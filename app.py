@@ -17,10 +17,10 @@ from mikro.api.schema import (
     PhysicalSizeInput,
     ChannelInput,
     StageFragment,
+    RepresentationViewInput,
     create_instrument,
     create_position,
     create_channel,
-    create_dimension_map,
     Dimension,
     
 )
@@ -99,6 +99,8 @@ def convert_omero_file(
             pixels = image.pixels
             print(pixels)
 
+
+            views = []
             # read array (at the moment fake)
             array = load_as_xarray(f, index, pixels=pixels)
 
@@ -114,12 +116,34 @@ def convert_omero_file(
                     tolerance=position_tolerance,
                 )
 
+
+
+            if channels_from_channels:
+                for index, c in enumerate(pixels.channels):
+                    c = create_channel(
+                                    name=c.name,
+                                    emission_wavelength=c.emission_wavelength,
+                                    excitation_wavelength=c.excitation_wavelength,
+                                    acquisition_mode=c.acquisition_mode.value
+                                    if c.acquisition_mode
+                                    else None,
+                                    color=c.color.as_rgb() if c.color else None,
+                                )
+                    
+                    views.append(RepresentationViewInput(
+                        cMin=index,
+                        cMax=index,
+                        channel=c
+                    ))
+                          
+
             rep = from_xarray(
                     array,
                     name=image.name,
                     datasets=[dataset] if dataset else file.datasets,
                     file_origins=[file],
                     tags=["converted"],
+                    views=views,
                     omero=OmeroRepresentationInput(
                         planes=[
                             PlaneInput(
@@ -175,26 +199,7 @@ def convert_omero_file(
                     ),
                 )
             
-            if channels_from_channels:
-                assert len(pixels.channels) == array.sizes["c"], "Number of channels does not match"
-                for index, c in enumerate(pixels.channels):
-                    c = create_channel(
-                                    name=c.name,
-                                    emission_wavelength=c.emission_wavelength,
-                                    excitation_wavelength=c.excitation_wavelength,
-                                    acquisition_mode=c.acquisition_mode.value
-                                    if c.acquisition_mode
-                                    else None,
-                                    color=c.color.as_rgb() if c.color else None,
-                                )
-                    
-                    map = create_dimension_map(
-                        omero=rep.omero.id,
-                        dim=Dimension.C,
-                        index=index,
-                        channel=c
-                    )
-                            
+              
 
 
 

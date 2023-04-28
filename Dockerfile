@@ -36,13 +36,15 @@ RUN pip install "readlif>=0.6.4"
 RUN pip install "tifffile==2022.10.10"
 RUN pip install "scyjava"
 RUN pip install "requests"
-RUN pip install "arkitekt[cli]==0.4.86"
-
 
 COPY test.tiff /tmp
 COPY z.py /tmp
 WORKDIR /tmp
 RUN python z.py
+
+
+RUN pip install "arkitekt[cli]==0.4.97"
+
 
 
 

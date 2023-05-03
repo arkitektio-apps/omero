@@ -4,7 +4,7 @@ import numpy as np
 import xarray as xr
 from concurrent.futures import ThreadPoolExecutor
 import asyncio
-from arkitekt import register
+from arkitekt import register, group
 from mikro.api.schema import (
     RepresentationFragment,
     from_xarray,
@@ -46,7 +46,7 @@ def load_as_xarray(path: str, series: str, pixels: Pixels):
         raise NotImplementedError("Only tiff supported at the moment. Because of horrendous python bioformats performance and memory leaks.")
 
 
-@register()
+@register(port_groups=[group(key="advanced")], groups={"position_from_planes": ["advanced"], "channels_from_channels": ["advanced"], "position_tolerance": ["advanced"]})
 def convert_omero_file(
     file: OmeroFileFragment,
     stage: Optional[StageFragment],

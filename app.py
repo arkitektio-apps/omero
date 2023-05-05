@@ -89,20 +89,21 @@ def convert_omero_file(
         instrument_map = {}
 
         for instrument in meta.instruments:
-            instrument_map[instrument.id] = create_instrument(
-                name=instrument.id,
-                # dichroics=instrument.dichroics,
-                # filters=instrument.filters,
-                lot_number=instrument.microscope.lot_number
-                if instrument.microscope
-                else None,
-                serial_number=instrument.microscope.serial_number
-                if instrument.microscope
-                else None,
-                manufacturer=instrument.microscope.manufacturer
-                if instrument.microscope
-                else None,
-            )
+            if instrument.id:
+                instrument_map[instrument.id] = create_instrument(
+                    name=instrument.id,
+                    # dichroics=instrument.dichroics,
+                    # filters=instrument.filters,
+                    lot_number=instrument.microscope.lot_number
+                    if instrument.microscope
+                    else None,
+                    serial_number=instrument.microscope.serial_number
+                    if instrument.microscope
+                    else None,
+                    manufacturer=instrument.microscope.manufacturer
+                    if instrument.microscope
+                    else None,
+                )
 
         for index, image in enumerate(meta.images):
             # we will create an image for every series here
@@ -143,7 +144,7 @@ def convert_omero_file(
             if channels_from_channels:
                 for index, c in enumerate(pixels.channels):
                     c = create_channel(
-                                    name=c.name,
+                                    name=c.name or f"Channel {index}",
                                     emission_wavelength=c.emission_wavelength,
                                     excitation_wavelength=c.excitation_wavelength,
                                     acquisition_mode=c.acquisition_mode.value

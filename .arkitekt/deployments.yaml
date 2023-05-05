@@ -98,4 +98,26 @@ deployments:
   scopes:
   - read
   version: 0.0.9
-latest_deployment: '2023-05-03T18:50:09.243899'
+- author: john doe
+  command: arkitekt run port
+  created_at: '2023-05-04T19:08:36.429020'
+  definitions: []
+  entrypoint: app
+  identifier: omero
+  image: jhnnsrs/omero:0.0.11
+  requirements: []
+  scopes:
+  - read
+  version: 0.0.11
+- author: john doe
+  command: arkitekt run port
+  created_at: '2023-05-05T11:46:19.484083'
+  definitions: []
+  entrypoint: app
+  identifier: omero
+  image: jhnnsrs/omero:0.0.12
+  requirements: []
+  scopes:
+  - read
+  version: 0.0.12
+latest_deployment: '2023-05-05T11:46:27.759223'

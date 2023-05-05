@@ -20,8 +20,11 @@ from mikro.api.schema import (
     RepresentationViewInput,
     create_instrument,
     create_position,
+    create_timepoint,
+
     create_channel,
     Dimension,
+    EraFragment,
     
 )
 from ome_types.model import Pixels
@@ -46,14 +49,17 @@ def load_as_xarray(path: str, series: str, pixels: Pixels):
         raise NotImplementedError("Only tiff supported at the moment. Because of horrendous python bioformats performance and memory leaks.")
 
 
-@register(port_groups=[group(key="advanced")], groups={"position_from_planes": ["advanced"], "channels_from_channels": ["advanced"], "position_tolerance": ["advanced"]})
+@register(port_groups=[group(key="advanced")], groups={"position_from_planes": ["advanced"], "channels_from_channels": ["advanced"], "position_tolerance": ["advanced"], "timepoint_from_time": ["advanced"], "timepoint_tolerance": ["advanced"]})
 def convert_omero_file(
     file: OmeroFileFragment,
     stage: Optional[StageFragment],
+    era: Optional[EraFragment],
     dataset: Optional[DatasetFragment],
     position_from_planes: bool = True,
+    timepoint_from_time: bool = True,
     channels_from_channels: bool = True,
     position_tolerance: Optional[float] = None,
+    timepoint_tolerance: Optional[float] = None,
 ) -> List[RepresentationFragment]:
     """Convert Omero
 
@@ -61,10 +67,14 @@ def convert_omero_file(
 
     Args:
         file (OmeroFileFragment): The File to be converted
-        sample (Optional[SampleFragment], optional): The Sample to which the Image belongs. Defaults to None.
-        experiment (Optional[ExperimentFragment], optional): The Experiment to which the Image belongs. Defaults to None.
-        auto_create_sample (bool, optional): Should we automatically create a sample if none is provided?. Defaults to True.
-        position_from_planes (bool, optional): Should we use the first planes position to put the image into context
+        stage (Optional[StageFragment], optional): The Stage in which to put the Image. Defaults to None.
+        era (Optional[EraFragment], optional): The Era in which to put the Image.. Defaults to None.
+        dataset (Optional[DatasetFragment], optional): The Dataset in which to put the Image. Defaults to the file dataset.
+        position_from_planes (bool, optional): Whether to create a position from the first planes (only if stage is provided). Defaults to True.
+        timepoint_from_time (bool, optional): Whether to create a timepoint from the first time (only if era is provided). Defaults to True.
+        channels_from_channels (bool, optional): Whether to create a channel from the channels. Defaults to True.
+        position_tolerance (Optional[float], optional): The tolerance for the position. Defaults to no tolerance.
+        timepoint_tolerance (Optional[float], optional): The tolerance for the timepoint. Defaults  to no tolerance.
 
     Returns:
         List[RepresentationFragment]: The created series in this file
@@ -105,6 +115,7 @@ def convert_omero_file(
             array = load_as_xarray(f, index, pixels=pixels)
 
             position = None
+            timepoint = None
 
             if stage and position_from_planes and len(pixels.planes) > 0:
                 first_plane = pixels.planes[0]
@@ -115,6 +126,17 @@ def convert_omero_file(
                     z=1,
                     tolerance=position_tolerance,
                 )
+
+            if era and timepoint_from_time and image.acquisition_date:
+                assert era.start, "Era needs to have a start"
+                first_plane = pixels.planes[0]
+                timepoint = create_timepoint(
+                    era,
+                    delta_t=(image.acquisition_date - era.start.replace(tzinfo=None)).microseconds,
+                    tolerance=timepoint_tolerance,
+                )
+                print(timepoint)
+
 
 
 
@@ -139,7 +161,7 @@ def convert_omero_file(
 
             rep = from_xarray(
                     array,
-                    name=image.name,
+                    name=file.name + " - "  + (image.name if image.name else f"({index})"),
                     datasets=[dataset] if dataset else file.datasets,
                     file_origins=[file],
                     tags=["converted"],
@@ -158,6 +180,7 @@ def convert_omero_file(
                             )
                             for p in pixels.planes
                         ],
+                        timepoints=[timepoint] if timepoint else None,
                         positions=[position] if position else None,
                         acquisitionDate=image.acquisition_date,
                         physicalSize=PhysicalSizeInput(

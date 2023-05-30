@@ -1,5 +1,5 @@
 FROM openjdk:slim
-COPY --from=python:3.8 / /
+COPY --from=python:3.9 / /
 
 
 # Downloading and installing Maven
@@ -43,7 +43,7 @@ WORKDIR /tmp
 RUN python z.py
 
 
-RUN pip install "arkitekt[cli]==0.4.109"
+RUN pip install "arkitekt[cli]==0.4.116"
 
 
 

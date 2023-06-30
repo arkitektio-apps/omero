@@ -49,7 +49,7 @@ def load_as_xarray(path: str, series: str, pixels: Pixels):
         raise NotImplementedError("Only tiff supported at the moment. Because of horrendous python bioformats performance and memory leaks.")
 
 
-@register(port_groups=[group(key="advanced")], groups={"position_from_planes": ["advanced"], "channels_from_channels": ["advanced"], "position_tolerance": ["advanced"], "timepoint_from_time": ["advanced"], "timepoint_tolerance": ["advanced"]})
+@register(port_groups=[group(key="advanced")], groups={"position_from_planes": ["advanced"], "channels_from_channels": ["advanced"], "position_tolerance": ["advanced"], "timepoint_from_time": ["advanced"], "timepoint_tolerance": ["advanced"]}, collections=["conversion", "collection"])
 def convert_omero_file(
     file: OmeroFileFragment,
     stage: Optional[StageFragment],
@@ -234,22 +234,18 @@ def convert_omero_file(
     return images
 
 
-@register()
+@register(collections=["conversion","raw"])
 def convert_tiff_file(
     file: OmeroFileFragment,
-    stage: Optional[StageFragment],
     dataset: Optional[DatasetFragment],
 ) -> List[RepresentationFragment]:
     """Convert Tiff File
 
-    Converts an tilffe File in a set of Mikrodata
+    Converts an tilffe File in a set of Mikrodata (without metadata)
 
     Args:
         file (OmeroFileFragment): The File to be converted
-        sample (Optional[SampleFragment], optional): The Sample to which the Image belongs. Defaults to None.
-        experiment (Optional[ExperimentFragment], optional): The Experiment to which the Image belongs. Defaults to None.
-        auto_create_sample (bool, optional): Should we automatically create a sample if none is provided?. Defaults to True.
-        position_from_planes (bool, optional): Should we use the first planes position to put the image into context
+        dataset (Optional[DatasetFragment], optional): The dataset that should contain the added images. Defaults to None.
 
     Returns:
         List[RepresentationFragment]: The created series in this file

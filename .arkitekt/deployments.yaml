@@ -1,0 +1,17 @@
+deployments:
+- build_id: 516cb46c-5561-4d26-9aa0-56fcb3d2608f
+  builder: arkitekt.builders.port
+  definitions: []
+  deployed_at: '2023-08-29T15:52:34.089510'
+  deployment_id: 1b1ad59f-efd1-4b2e-9c2f-593d8c4755df
+  image: jhnnsrs/omero:0.0.1
+  manifest:
+    author: jhnnsrs
+    created_at: '2023-08-29T15:52:19.155821'
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: 0.0.1
+latest_deployment: '2023-08-29T15:52:34.089535'

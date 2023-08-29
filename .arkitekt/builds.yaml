@@ -1,272 +1,32 @@
 builds:
-- build_id: d1886137-efe4-4cf3-ac63-246d66963017
-  builder: port
+- build_id: 5cf35bd0-1ab6-4610-b26d-343d500502f8
+  builder: arkitekt.builders.port
   manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: latest
-- build_id: cc3dd5de-d6ad-4d4a-a58b-9add84621d83
-  builder: port
-  manifest:
-    author: john doe
+    author: jhnnsrs
     entrypoint: app
     identifier: omero
     requirements: []
     scopes:
     - read
     version: 0.0.1
-- build_id: b67a439b-7434-4457-be93-f3a7b9dcface
-  builder: port
+- build_id: 516cb46c-5561-4d26-9aa0-56fcb3d2608f
+  builder: arkitekt.builders.port
   manifest:
-    author: john doe
+    author: jhnnsrs
     entrypoint: app
     identifier: omero
     requirements: []
     scopes:
     - read
-    version: 0.0.2
-- build_id: 054efce6-361f-470a-bdcb-21da05d7ec82
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.3
-- build_id: 21e55ee7-baf4-4fa7-89a0-c8169e44998e
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.3
-- build_id: 86e70f1e-fe26-48b5-961e-deba62959025
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.4
-- build_id: 0e0c18a2-2721-42c8-912a-b1480976bf50
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.5
-- build_id: 8c97a5ff-3f73-42b6-940b-fbdfc20e4e6f
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.5
-- build_id: db90ad99-dba2-4a49-af71-6657c97a65da
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.6
-- build_id: 1714a857-1fdb-4567-b8bb-2abf05bc3143
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.6
-- build_id: 8adb9ea6-8439-4a1e-9e8e-20aa664e32bd
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.7
-- build_id: dfb0fb61-0e2f-402f-a6b9-3f1b135008e6
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.8
-- build_id: 80196b7c-a130-43d9-b5bd-6b15d6cd9695
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.9
-- build_id: 8ffe5a50-452f-40c6-9032-ab2d5f692e25
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.9
-- build_id: 15c1616b-dbf6-45d8-8e26-3ba7a59bc12f
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.11
-- build_id: 03b1fe53-3ada-418e-8296-50577271dfa3
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.12
-- build_id: 6afc355d-4ce9-43ba-aad9-e6b5aef3e401
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.13
-- build_id: c8471902-b906-4c01-a444-a6cf3bd62907
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.14
-- build_id: bc74e398-42b2-481a-a17d-b04be6a7d6c1
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.14
-- build_id: 7264833f-1886-47cc-a6ee-a1379b23f9f8
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.14
-- build_id: 0463f470-f279-41e0-9025-c67b7f61b414
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.14
-- build_id: 49e25203-d0a1-40fb-b30d-335eb8a873c6
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.0.14
-- build_id: 77b84da5-fdad-4f27-ac36-694d4ab7b33e
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.2.0
-- build_id: 506bba87-c90e-41d1-bc17-1aa60cd3ace3
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.2.1
-- build_id: 14d5cb49-e7d9-4b37-839b-e3f4698b08e7
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.2.2
-- build_id: 3daa1c48-2ab9-47df-8732-61890fe57107
-  builder: port
-  manifest:
-    author: john doe
-    entrypoint: app
-    identifier: omero
-    requirements: []
-    scopes:
-    - read
-    version: 0.2.2
+    version: 0.0.1
 latest_build:
-  build_id: 3daa1c48-2ab9-47df-8732-61890fe57107
-  builder: port
+  build_id: 516cb46c-5561-4d26-9aa0-56fcb3d2608f
+  builder: arkitekt.builders.port
   manifest:
-    author: john doe
+    author: jhnnsrs
     entrypoint: app
     identifier: omero
     requirements: []
     scopes:
     - read
-    version: 0.2.2
+    version: 0.0.1

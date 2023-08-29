@@ -43,7 +43,7 @@ WORKDIR /tmp
 RUN python z.py
 
 
-RUN pip install "arkitekt[cli]==0.4.127"
+RUN pip install "arkitekt[all]==0.5.29"
 
 
 

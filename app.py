@@ -21,11 +21,9 @@ from mikro.api.schema import (
     create_instrument,
     create_position,
     create_timepoint,
-
     create_channel,
     Dimension,
     EraFragment,
-    
 )
 from ome_types.model import Pixels
 import logging
@@ -37,6 +35,7 @@ import scyjava
 logger = logging.getLogger(__name__)
 x = config
 
+
 def load_as_xarray(path: str, series: str, pixels: Pixels):
     if path.endswith((".stk", ".tif", ".tiff", ".TIF")):
         image = tifffile.imread(path)
@@ -46,10 +45,22 @@ def load_as_xarray(path: str, series: str, pixels: Pixels):
         return xr.DataArray(image, dims=list("ctzyx"))
 
     else:
-        raise NotImplementedError("Only tiff supported at the moment. Because of horrendous python bioformats performance and memory leaks.")
+        raise NotImplementedError(
+            "Only tiff supported at the moment. Because of horrendous python bioformats performance and memory leaks."
+        )
 
 
-@register(port_groups=[group(key="advanced")], groups={"position_from_planes": ["advanced"], "channels_from_channels": ["advanced"], "position_tolerance": ["advanced"], "timepoint_from_time": ["advanced"], "timepoint_tolerance": ["advanced"]}, collections=["conversion", "collection"])
+@register(
+    port_groups=[group(key="advanced")],
+    groups={
+        "position_from_planes": ["advanced"],
+        "channels_from_channels": ["advanced"],
+        "position_tolerance": ["advanced"],
+        "timepoint_from_time": ["advanced"],
+        "timepoint_tolerance": ["advanced"],
+    },
+    collections=["conversion", "collection"],
+)
 def convert_omero_file(
     file: OmeroFileFragment,
     stage: Optional[StageFragment],
@@ -110,7 +121,6 @@ def convert_omero_file(
             pixels = image.pixels
             print(pixels)
 
-
             views = []
             # read array (at the moment fake)
             array = load_as_xarray(f, index, pixels=pixels)
@@ -133,108 +143,98 @@ def convert_omero_file(
                 first_plane = pixels.planes[0]
                 timepoint = create_timepoint(
                     era,
-                    delta_t=(image.acquisition_date - era.start.replace(tzinfo=None)).microseconds,
+                    delta_t=(
+                        image.acquisition_date - era.start.replace(tzinfo=None)
+                    ).microseconds,
                     tolerance=timepoint_tolerance,
                 )
                 print(timepoint)
 
-
-
-
             if channels_from_channels:
                 for index, c in enumerate(pixels.channels):
                     c = create_channel(
-                                    name=c.name or f"Channel {index}",
-                                    emission_wavelength=c.emission_wavelength,
-                                    excitation_wavelength=c.excitation_wavelength,
-                                    acquisition_mode=c.acquisition_mode.value
-                                    if c.acquisition_mode
-                                    else None,
-                                    color=c.color.as_rgb() if c.color else None,
-                                )
-                    
-                    views.append(RepresentationViewInput(
-                        cMin=index,
-                        cMax=index,
-                        channel=c
-                    ))
-                          
+                        name=c.name or f"Channel {index}",
+                        emission_wavelength=c.emission_wavelength,
+                        excitation_wavelength=c.excitation_wavelength,
+                        acquisition_mode=c.acquisition_mode.value
+                        if c.acquisition_mode
+                        else None,
+                        color=c.color.as_rgb() if c.color else None,
+                    )
+
+                    views.append(
+                        RepresentationViewInput(cMin=index, cMax=index, channel=c)
+                    )
 
             rep = from_xarray(
-                    array,
-                    name=file.name + " - "  + (image.name if image.name else f"({index})"),
-                    datasets=[dataset] if dataset else file.datasets,
-                    file_origins=[file],
-                    tags=["converted"],
-                    views=views,
-                    omero=OmeroRepresentationInput(
-                        planes=[
-                            PlaneInput(
-                                z=p.the_z,
-                                c=p.the_c,
-                                t=p.the_t,
-                                exposureTime=p.exposure_time,
-                                deltaT=p.delta_t,
-                                positionX=p.position_x,
-                                positionY=p.position_y,
-                                positionZ=p.position_z,
-                            )
-                            for p in pixels.planes
-                        ],
-                        timepoints=[timepoint] if timepoint else None,
-                        positions=[position] if position else None,
-                        acquisitionDate=image.acquisition_date,
-                        physicalSize=PhysicalSizeInput(
-                            x=pixels.physical_size_x,
-                            y=pixels.physical_size_y,
-                            z=pixels.physical_size_z,
-                        ),
-                        instrument=instrument_map.get(image.instrument_ref.id, None)
-                        if image.instrument_ref
-                        else None,
-                        channels=[
-                            ChannelInput(
-                                name=c.name,
-                                emmissionWavelength=c.emission_wavelength,
-                                excitationWavelength=c.excitation_wavelength,
-                                acquisitionMode=c.acquisition_mode.value
-                                if c.acquisition_mode
-                                else None,
-                                color=c.color.as_rgb(),
-                            )
-                            for c in pixels.channels
-                        ],
-                        objectiveSettings=ObjectiveSettingsInput(
-                            correctionCollar=image.objective_settings.correction_collar,
-                            medium=str(image.objective_settings.medium.value).upper()
-                            if image.objective_settings.medium
-                            else None,
+                array,
+                name=file.name + " - " + (image.name if image.name else f"({index})"),
+                datasets=[dataset] if dataset else file.datasets,
+                file_origins=[file],
+                tags=["converted"],
+                views=views,
+                omero=OmeroRepresentationInput(
+                    planes=[
+                        PlaneInput(
+                            z=p.the_z,
+                            c=p.the_c,
+                            t=p.the_t,
+                            exposureTime=p.exposure_time,
+                            deltaT=p.delta_t,
+                            positionX=p.position_x,
+                            positionY=p.position_y,
+                            positionZ=p.position_z,
                         )
-                        if image.objective_settings
-                        else None,
-                        imagingEnvironment=ImagingEnvironmentInput(
-                            airPressure=image.imaging_environment.air_pressure,
-                            co2Percent=image.imaging_environment.co2_percent,
-                            humidity=image.imaging_environment.humidity,
-                            temperature=image.imaging_environment.temperature,
-                        )
-                        if image.imaging_environment
-                        else None,
+                        for p in pixels.planes
+                    ],
+                    timepoints=[timepoint] if timepoint else None,
+                    positions=[position] if position else None,
+                    acquisitionDate=image.acquisition_date,
+                    physicalSize=PhysicalSizeInput(
+                        x=pixels.physical_size_x,
+                        y=pixels.physical_size_y,
+                        z=pixels.physical_size_z,
                     ),
-                )
-            
-              
-
-
-
-            images.append(
-                rep
+                    instrument=instrument_map.get(image.instrument_ref.id, None)
+                    if image.instrument_ref
+                    else None,
+                    channels=[
+                        ChannelInput(
+                            name=c.name,
+                            emmissionWavelength=c.emission_wavelength,
+                            excitationWavelength=c.excitation_wavelength,
+                            acquisitionMode=c.acquisition_mode.value
+                            if c.acquisition_mode
+                            else None,
+                            color=c.color.as_rgb(),
+                        )
+                        for c in pixels.channels
+                    ],
+                    objectiveSettings=ObjectiveSettingsInput(
+                        correctionCollar=image.objective_settings.correction_collar,
+                        medium=str(image.objective_settings.medium.value).upper()
+                        if image.objective_settings.medium
+                        else None,
+                    )
+                    if image.objective_settings
+                    else None,
+                    imagingEnvironment=ImagingEnvironmentInput(
+                        airPressure=image.imaging_environment.air_pressure,
+                        co2Percent=image.imaging_environment.co2_percent,
+                        humidity=image.imaging_environment.humidity,
+                        temperature=image.imaging_environment.temperature,
+                    )
+                    if image.imaging_environment
+                    else None,
+                ),
             )
+
+            images.append(rep)
 
     return images
 
 
-@register(collections=["conversion","raw"])
+@register(collections=["conversion", "raw"])
 def convert_tiff_file(
     file: OmeroFileFragment,
     dataset: Optional[DatasetFragment],

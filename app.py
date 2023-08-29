@@ -250,6 +250,7 @@ def convert_tiff_file(
     Returns:
         List[RepresentationFragment]: The created series in this file
     """
+    print("images")
 
     images = []
 

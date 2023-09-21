@@ -31,12 +31,12 @@ import tifffile
 from aicsimageio.metadata.utils import bioformats_ome
 from scyjava import config, jimport
 import scyjava
-
+from aicsimageio import AICSImage
 logger = logging.getLogger(__name__)
 x = config
 
 
-def load_as_xarray(path: str, series: str, pixels: Pixels):
+def load_as_xarray(path: str, index: int):
     if path.endswith((".stk", ".tif", ".tiff", ".TIF")):
         image = tifffile.imread(path)
         print(image.shape)
@@ -45,9 +45,11 @@ def load_as_xarray(path: str, series: str, pixels: Pixels):
         return xr.DataArray(image, dims=list("ctzyx"))
 
     else:
-        raise NotImplementedError(
-            "Only tiff supported at the moment. Because of horrendous python bioformats performance and memory leaks."
-        )
+        image = AICSImage(path)
+        image.set_scene(index)
+        image = image.xarray_data.rename({"C": "c", "T": "t", "Z": "z", "X": "x", "Y": "y"})
+        image.attrs = {}
+        return image
 
 
 @register(
@@ -123,7 +125,7 @@ def convert_omero_file(
 
             views = []
             # read array (at the moment fake)
-            array = load_as_xarray(f, index, pixels=pixels)
+            array = load_as_xarray(f, index)
 
             position = None
             timepoint = None

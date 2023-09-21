@@ -43,7 +43,8 @@ WORKDIR /tmp
 RUN python z.py
 
 
-RUN pip install "arkitekt[all]==0.5.30"
+RUN pip install "arkitekt[all]==0.5.45"
+RUN pip install "pydantic<2"
 
 
 

@@ -39,8 +39,7 @@ builds:
     scopes:
     - read
     version: 0.0.2
-latest_build:
-  build_id: b84ec7f0-c4b6-45ad-9a06-475ed555ea88
+- build_id: b29b623b-653a-413b-83e3-8f398b5fb750
   builder: arkitekt.builders.port
   manifest:
     author: jhnnsrs
@@ -50,3 +49,84 @@ latest_build:
     scopes:
     - read
     version: 0.0.2
+- build_id: 87d00f4a-4de7-4e6b-85ae-c0c589d546a7
+  builder: arkitekt.builders.port
+  manifest:
+    author: jhnnsrs
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: 0.0.2
+- build_id: ff73dde4-59dd-4269-b650-11b5880355d2
+  builder: arkitekt.builders.port
+  manifest:
+    author: jhnnsrs
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: 0.0.2
+- build_id: f70cd646-c3ff-4e28-89dd-b37ba3197536
+  builder: arkitekt.builders.port
+  manifest:
+    author: jhnnsrs
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: 0.0.2
+- build_id: 326cbc93-c0de-42c0-997f-37b4a14dd70f
+  builder: arkitekt.builders.port
+  manifest:
+    author: jhnnsrs
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: 0.0.2
+- build_id: 1ed17cc9-c2ae-48e1-aef7-ac56b18b7744
+  builder: arkitekt.builders.port
+  manifest:
+    author: jhnnsrs
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: 0.0.2
+- build_id: 335e9235-559a-419c-9653-5cac35415ff1
+  builder: arkitekt.builders.port
+  manifest:
+    author: jhnnsrs
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: 0.0.2
+- build_id: 0bcb1281-4919-447b-8853-a52fd84a7724
+  builder: arkitekt.builders.port
+  manifest:
+    author: jhnnsrs
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: 0.1.0
+latest_build:
+  build_id: 0bcb1281-4919-447b-8853-a52fd84a7724
+  builder: arkitekt.builders.port
+  manifest:
+    author: jhnnsrs
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: 0.1.0

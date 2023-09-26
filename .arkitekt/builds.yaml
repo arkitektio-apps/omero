@@ -119,8 +119,7 @@ builds:
     scopes:
     - read
     version: 0.1.0
-latest_build:
-  build_id: 0bcb1281-4919-447b-8853-a52fd84a7724
+- build_id: 0263b34e-3d12-4aae-a425-2a2fd94d833e
   builder: arkitekt.builders.port
   manifest:
     author: jhnnsrs
@@ -130,3 +129,24 @@ latest_build:
     scopes:
     - read
     version: 0.1.0
+- build_id: 5c0109cb-de1f-4c9a-9ee8-bd88366975ef
+  builder: arkitekt.builders.port
+  manifest:
+    author: jhnnsrs
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: 0.1.1
+latest_build:
+  build_id: 5c0109cb-de1f-4c9a-9ee8-bd88366975ef
+  builder: arkitekt.builders.port
+  manifest:
+    author: jhnnsrs
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: 0.1.1

@@ -139,8 +139,7 @@ builds:
     scopes:
     - read
     version: 0.1.1
-latest_build:
-  build_id: 5c0109cb-de1f-4c9a-9ee8-bd88366975ef
+- build_id: 505254d3-b360-4de4-855e-54647cda9f59
   builder: arkitekt.builders.port
   manifest:
     author: jhnnsrs
@@ -149,4 +148,15 @@ latest_build:
     requirements: []
     scopes:
     - read
-    version: 0.1.1
+    version: 0.1.2
+latest_build:
+  build_id: 505254d3-b360-4de4-855e-54647cda9f59
+  builder: arkitekt.builders.port
+  manifest:
+    author: jhnnsrs
+    entrypoint: app
+    identifier: omero
+    requirements: []
+    scopes:
+    - read
+    version: 0.1.2
